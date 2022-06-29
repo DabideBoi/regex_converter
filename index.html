@@ -1,0 +1,147 @@
+<html>
+    <header>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    </header>
+    
+    <body>
+        <div class="container mt-5 mb-1">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Number 1 (a and b)</label>
+                  <input type="text" class="form-control" id="exampleInputWord1" aria-describedby="wordHelp" placeholder="Enter word (e.g. aaababbba)">
+                  <small id="emailHelp" class="form-text text-muted">Sample word: aaababbba (brought to you by Anya)</small>
+                </div>
+                  
+                <button button id="submit-button1" pys-onClick="my_function1" class="btn btn-primary">Submit</button>
+                <div></div>
+                <div id="test-output1" class="mt-5 mb-5"></div>
+        </div>
+
+        <div id="test-output1"></div>
+
+        <div class="container mt-1 mb-1">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Number 2 (0 and 1)</label>
+                  <input type="text" class="form-control" id="exampleInputWord2" aria-describedby="wordHelp" placeholder="Enter word (e.g. aaababbba)">
+                  <small id="emailHelp" class="form-text text-muted">Sample word: 0010111001 (brought to you by Mommy Yor)</small>
+                </div>
+                  
+                <button button id="submit-button2" pys-onClick="my_function2" class="btn btn-primary">Submit</button>
+                <div></div>
+                <div id="test-output2" class="mt-5 mb-5"></div>  
+        </div>
+
+        <div id="test-output2"></div>        
+
+        <py-env>
+            - pythomata
+        </py-env>
+        <py-script>
+            from pythomata import SimpleDFA
+            def my_function1(*args, **kwargs):
+                alphabet = {"a", "b"}
+                states = {"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"}
+                initial_state = "s1"
+                accepting_states = {"s9"}
+                transition_function = {
+                    "s1": {
+                        "b" : "s3",
+                        "a" : "s2"
+                    },
+                    "s2": {
+                        "b" : "s3",
+                        "a" : "s3"
+                    },
+                    "s3": {
+                        "b" : "s5",
+                        "a" : "s4"
+                    },
+                    "s4": {
+                        "b" : "s5",
+                        "a" : "s6"
+                    },
+                    "s5": {
+                        "b" : "s7",
+                        "a" : "s4"
+                    },
+                    "s6": {
+                        "b" : "s5",
+                        "a" : "s8"
+                    },
+                    "s7": {
+                        "b" : "s8",
+                        "a" : "s4"
+                    },
+                    "s8": {
+                        "b" : "s9",
+                        "a" : "s9"
+                    },
+                    "s9": {
+                        "b" : "s9",
+                        "a" : "s9"
+                    }
+                
+                }
+                dfa = SimpleDFA(states, alphabet, initial_state, accepting_states, transition_function)
+                word = Element('exampleInputWord1').element.value 
+                #"aaababbba"
+                #word = "abbabaaaabab"
+                #word = "bbaabbbbbabab"
+                answer = str(dfa.accepts(word))
+                Element('test-output1').element.innerText = answer
+
+            def my_function2(*args, **kwargs):
+                alphabet = {"1", "0"}
+                states = {"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"}
+                initial_state = "s1"
+                accepting_states = {"s9"}
+                transition_function = {
+                    "s1": {
+                        "1" : "s3",
+                        "0" : "s2"
+                    },
+                    "s2": {
+                        "1" : "s4",
+                        "0" : "s5"
+                    },
+                    "s3": {
+                        "1" : "s5",
+                        "0" : "s4"
+                    },
+                    "s4": {
+                        "1" : "s5",
+                        "0" : "s5"
+                    },
+                    "s5": {
+                        "1" : "s6",
+                        "0" : "s7"
+                    },
+                    "s6": {
+                        "1" : "s8",
+                        "0" : "s7"
+                    },
+                    "s7": {
+                        "1" : "s6",
+                        "0" : "s8"
+                    },
+                    "s8": {
+                        "1" : "s9",
+                        "0" : "s9"
+                    },
+                    "s9": {
+                        "1" : "s9",
+                        "0" : "s9"
+                    },
+                }
+                
+                dfa = SimpleDFA(states, alphabet, initial_state, accepting_states, transition_function)
+                word = Element('exampleInputWord2').element.value 
+                #"aaababbba"
+                #word = "abbabaaaabab"
+                #word = "bbaabbbbbabab"
+                answer = str(dfa.accepts(word))
+                Element('test-output2').element.innerText = answer
+        </py-script>
+    </body>
+</html>
