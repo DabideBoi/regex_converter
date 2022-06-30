@@ -8,13 +8,14 @@
     <body>
         <div class="container mt-5 mb-1">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Number 1 (a and b)</label>
-                  <label for="exampleInputEmail1">( b + aa + ab ) ( a + b )* ( bb + aba + ab )* ( aaa + bbb ) ( a + b ) ( a + b + ab )* </label>
+                  <label for="exampleInputEmail1">( b + aa + ab ) ( a + b )* ( bb + aba + ab )* ( aaa + bbb ) ( a + b ) ( a + b + ab )*</label>
                   <input type="text" class="form-control" id="exampleInputWord1" aria-describedby="wordHelp" placeholder="Enter word (e.g. aaababbba)">
                   <small id="emailHelp" class="form-text text-muted">Sample word: aaababbba (brought to you by Anya)</small>
                 </div>
                   
                 <button button id="submit-button1" pys-onClick="my_function1" class="btn btn-primary">Submit</button>
+                <button button id="clear-button1" pys-onClick="clear1" class="btn btn-danger">Clear</button>
+                
                 <div></div>
                 <div id="test-output1" class="mt-5 mb-5"></div>
         </div>
@@ -23,18 +24,35 @@
 
         <div class="container mt-1 mb-1">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Number 2 (0 and 1)</label>
-                  <label for="exampleInputEmail1">( 1 + 0 )* (11 + 00 + 101 + 010) ( 1 + 0 + 11 + 00 + 101 )* ( 11 + 00 ) ( 11+ 00 + 101 )* ( 1 + 0 ) ( 1 + 0 + 11 )*                </label>
-                  <input type="text" class="form-control" id="exampleInputWord2" aria-describedby="wordHelp" placeholder="Enter word (e.g. aaababbba)">
+                  <label for="exampleInputEmail1">( 1 + 0 )* (11 + 00 + 101 + 010) ( 1 + 0 + 11 + 00 + 101 )* ( 11 + 00 ) ( 11+ 00 + 101 )* ( 1 + 0 ) ( 1 + 0 + 11 )*</label>
+                  <input type="text" class="form-control" id="exampleInputWord2" aria-describedby="wordHelp" placeholder="Enter word (e.g. 0010111001)">
                   <small id="emailHelp" class="form-text text-muted">Sample word: 0010111001 (brought to you by Mommy Yor)</small>
                 </div>
                   
                 <button button id="submit-button2" pys-onClick="my_function2" class="btn btn-primary">Submit</button>
+                <button button id="clear-button2" pys-onClick="clear2" class="btn btn-danger">Clear</button>
+                
                 <div></div>
                 <div id="test-output2" class="mt-5 mb-5"></div>  
-        </div>
+        </div>   
 
-        <div id="test-output2"></div>        
+        <div class="container justify-content-center align-items-center d-flex flex-column">
+              <div class="card mb-3" style="width: 36rem;">
+                <img class="card-img-top" src="https://media.discordapp.net/attachments/754335806503780382/991966235745075240/unknown.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">DFA #1</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  </div>
+              </div>
+              <div class="card mb-3" style="width: 36rem;">
+                <img class="card-img-top" src="https://media.discordapp.net/attachments/754335806503780382/991965438076534835/unknown.png" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">DFA #2</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  </div>
+            </div>
+              
+        </div>
 
         <py-env>
             - pythomata
@@ -42,6 +60,8 @@
         <py-script>
             from pythomata import SimpleDFA
             def my_function1(*args, **kwargs):
+                word = Element('exampleInputWord1').element.value 
+                chunks = word.split(', ')
                 alphabet = {"a", "b"}
                 states = {"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"}
                 initial_state = "s1"
@@ -86,14 +106,20 @@
                 
                 }
                 dfa = SimpleDFA(states, alphabet, initial_state, accepting_states, transition_function)
-                word = Element('exampleInputWord1').element.value 
                 #"aaababbba"
                 #word = "abbabaaaabab"
                 #word = "bbaabbbbbabab"
-                answer = str(dfa.accepts(word))
+                answer = []
+                for stuff in chunks:
+                    boolean = str(dfa.accepts(stuff))
+                    final =  stuff + " = " + boolean
+                    answer.append(final)
+                answer = '\n'.join(answer)
                 Element('test-output1').element.innerText = answer
 
             def my_function2(*args, **kwargs):
+                word = Element('exampleInputWord2').element.value 
+                chunks = word.split(', ')
                 alphabet = {"1", "0"}
                 states = {"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"}
                 initial_state = "s1"
@@ -142,8 +168,20 @@
                 #"aaababbba"
                 #word = "abbabaaaabab"
                 #word = "bbaabbbbbabab"
-                answer = str(dfa.accepts(word))
+                answer = []
+                for stuff in chunks:
+                    boolean = str(dfa.accepts(stuff))
+                    final =  stuff + " = " + boolean
+                    answer.append(final)
+                answer = '\n'.join(answer)
                 Element('test-output2').element.innerText = answer
+
+            def clear1(*args, **kwargs):
+                Element('test-output1').element.innerText = ""
+
+            def clear2(*args, **kwargs):
+                Element('test-output2').element.innerText = ""
+
         </py-script>
     </body>
 </html>
